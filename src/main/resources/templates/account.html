@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xsi:schemaLocation="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main">
+<div layout:fragment="content">
+
+    <div class="breadcrumbs_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb_content">
+                        <h3>My Account</h3>
+                        <ul>
+                            <li><a th:href="@{'/index'}">home</a></li>
+                            <li class="btn btn-primary mt-3 mb-3" data-bs-toggle="modal" data-bs-target="#userAccount">Change
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container mt-7">
+            <!-- Table -->
+            <div class="row" style="margin-bottom: 50px">
+                <div class="col-xl-8 m-auto order-xl-1">
+                    <div class="card bg-secondary shadow">
+                        <div class="card-body">
+                            <form>
+                                <h6 class="heading-small text-muted mb-4">User information</h6>
+                                <div class="pl-lg-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-email">Email address</label>
+                                                <input type="email" id="input-email" class="form-control form-control-alternative" th:value="${currentUser.email}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group focused">
+                                                <label class="form-control-label" for="input-first-name">First name</label>
+                                                <input type="text" id="input-first-name" class="form-control form-control-alternative" th:value="${currentUser.firstName}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group focused">
+                                                <label class="form-control-label" for="input-last-name">Last name</label>
+                                                <input type="text" id="input-last-name" class="form-control form-control-alternative" th:value="${currentUser.lastName}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group focused">
+                                                <label class="form-control-label" for="input-old-password">Old password</label>
+                                                <input type="password" id="input-old-password" class="form-control form-control-alternative">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group focused">
+                                                <label class="form-control-label" for="input-new-password">New password</label>
+                                                <input type="text" id="input-new-password" class="form-control form-control-alternative">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="my-4">
+                                <!-- Address -->
+                                <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                                <div class="pl-lg-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group focused">
+                                                <label class="form-control-label" for="input-address">Address</label>
+                                                <input id="input-address" class="form-control form-control-alternative" type="text" th:value="${currentUser.address}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="input-phone">Phone</label>
+                                                <input type="number" id="input-phone" class="form-control form-control-alternative" th:value="${currentUser.phone}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group focused">
+                                                <label class="form-label">Country</label>
+                                                <select class="form-select" name="categoryId">
+                                                    <option th:each="country : ${countryList}"
+                                                            th:text="${country.countryName}"
+                                                            th:value="${country.id}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group focused">
+                                                <label class="form-label">City</label>
+                                                <select class="form-select" name="cityId">
+                                                    <option th:each="city : ${cityList}"
+                                                            th:text="${city.cityName}"
+                                                            th:value="${city.id}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="userAccount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content p-4">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Change Account</h4>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{'/edit-user-account'}" method="post"  enctype="multipart/form-data">
+                        <div class="form-group mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">First name</label>
+                            <input type="text" name="firstName" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Last name</label>
+                            <input type="text" name="lastName" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Old password</label>
+                            <input type="password" name="oldPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">New password</label>
+                            <input type="password" name="newPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" name="address" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="number" name="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">Country</label>
+                            <select class="form-select" name="countryId">
+                                <option th:each="country : ${countryList}"
+                                        th:text="${country.countryName}"
+                                        th:value="${country.id}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="form-label">City</label>
+                            <select class="form-select" name="countryId">
+                                <option th:each="city : ${cityList}"
+                                        th:text="${city.cityName}"
+                                        th:value="${city.id}"></option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
